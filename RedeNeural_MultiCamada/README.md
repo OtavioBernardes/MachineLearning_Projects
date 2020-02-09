@@ -7,8 +7,9 @@ A função step retorna 1 se o valor <> 0, e 0 se valor == 0
 ![](https://miro.medium.com/max/480/1*0iOzeMS3s-3LTU9hYH9ryg.png)
 
 Já a função sigmoid pode retornar valores entre 0 e 1, exceto numeros negativos.
+![](https://miro.medium.com/max/480/1*0iOzeMS3s-3LTU9hYH9ryg.png)
 
-Algoritmo implementado:  *"Não foi definido um erro minimo, colocamos um limite de epocas para a implentação, para que o loop não demora-se tanto."*
+Algoritmo implementado:  *"Não foi definido um erro minimo, colocamos um limite de epocas para a implentação, para que o loop não demora-se tanto."* </br>
 ![](https://raw.githubusercontent.com/OtavioBernardes/MachineLearning_Projects/master/RedeNeural_MultiCamada/Redes%20Neurais/imagem02.png)
 </br></br>
 Modelo da rede neural implementado abaixo:
