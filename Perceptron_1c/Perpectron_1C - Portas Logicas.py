@@ -44,6 +44,6 @@ def TreinarMachine():
                 print('Pesso atualizado: ' + str(pesos[j]))
             print('Total de erros: ' + str(erroTotal))
     
-## Main
+# Main
 TreinarMachine()
 print("Novos pesos:\nPeso 1: {} \nPeso 2: {}".format(pesos[0], pesos[1]))
