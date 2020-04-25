@@ -1,5 +1,5 @@
 # Problema
-O problema consiste em encontrar um melhor caminho de uma cidade do mapa ate a cidade de Bucharest.
+O problema consiste em encontrar o melhor caminho de uma cidade do mapa ate a cidade de Bucharest.
 ![](https://raw.githubusercontent.com/OtavioBernardes/MachineLearning_Projects/master/Algoritmo_A-star_Romenia/imagens/mapa_bucareste.png)
 O mapa acima contem a distancia entre cada nó, e na barra lateral a distancia em linha reta de cada cidade ate o objetivo.
 # Metodo de Solucão
