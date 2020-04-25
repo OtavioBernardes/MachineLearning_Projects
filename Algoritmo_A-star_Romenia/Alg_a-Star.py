@@ -50,5 +50,4 @@ def expandeCidade(cidade, distanciaPercorrida, cidadesPercorridasAteNóAtual):
         expandeCidade(ProximaCidade, distanciaPercorrida, cidadesPercorridasAteNóAtual) # Expande proxima cidade
 
 #_____________main____________
-print('Cidade Objetivo: Bucharest\nCidade de partida: Oradea')
 expandeCidade('Arad',0, '') #Cidade Origem, Distancia percorrida inicial, Cidades já percorridas.
