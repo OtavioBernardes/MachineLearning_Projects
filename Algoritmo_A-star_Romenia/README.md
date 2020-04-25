@@ -10,7 +10,7 @@ Minha função de custo é definida pela seguinte heuristica.<br/>
 
 Assumindo o mapa acima,  o algoritmo  é capaz de definir uma rota que permita,	a partir de qualquer cidade de origem, chegar  a bucharest,  optando pela melhor rota.
 
-###Exemplo	de entrada:
+### Exemplo	de entrada:
 Cidade de Origem: Arad
 O algoritmo irá expandir as cidades vizinhas de Arad e ordena-las pela menor heuristica.
 Fila de Prioridade = []
@@ -24,7 +24,7 @@ Fila de Prioridade = []
 >> Valor Heuristica: 140 + 253 + 0 = 393
 
 *Fila ordenada em ordem crescente*
-#####Fila de Prioridade  = [Sibiu, Timisoara, Zerind]
+##### Fila de Prioridade  = [Sibiu, Timisoara, Zerind]
 O algoritmo irá expandir e retirar o 1° elemento da fila.
 
 Continuará expandido as cidades ate chegar ao objetivo.
