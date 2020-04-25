@@ -1,6 +1,6 @@
-listaPrioridadeCidades = [] # Lista de prioridade de cidades com os respectivos dados: NomeCidade, heurística, Distancia Percorrida do ponto inicial ate a cidade
 CidadeObjetivo = 'Bucharest'  # Objetivo a ser atingido
-# Declara��o do dicionario, que representa o grafo com as cidades. No exemplo de Sibiu logo a baixo: [NomeCidade, Distancia de Sibiu ate Arad, Distancia de Sibiu ate Objetivo]
+filaPrioridadeCidade = [] # Fila de Prioridade de cidades, em ordem por menor custo.
+# Declaração do dicionario, que representa o grafo de cidades. No exemplo da cidade de SIBIU logo a baixo estão as seguintes informações: [NomeCidade, Distancia de Sibiu ate Arad, Distancia de Sibiu ate Objetivo]
 grafocidades = {'Arad':[['Zerind', 75, 374], ['Timisoara', 118, 329], ['Sibiu', 140, 253]],
                 'Bucharest':[['Fagaras', 211,178], ['Pitesti', 101, 101], ['Giurgiu', 90, 77], ['Urziceni', 85, 80]],
                 'Craiova': [['Dobreta', 120,242], ['RimnicuVilcea' ,146, 193], ['Pitesti', 138, 101]],
@@ -21,29 +21,34 @@ grafocidades = {'Arad':[['Zerind', 75, 374], ['Timisoara', 118, 329], ['Sibiu', 
                 'Urziceni': [['Bucharest', 85,0], ['Vaslui', 144, 199], ['Hirsova', 98, 151]],
                 'Vaslui': [['Urziceni', 142, 80], ['Iasi', 92,226]],
                 'Zerind': [['Arad', 75,366], ['Oradea', 71,380]]}
+                
+def OrdenarFILA(): # Ordenada a lista de prioridade com base nos valores de heuristica (Algoritmo de ordenação Selection Sort)  
+    for i in range(len(filaPrioridadeCidade)):
+        auxPos = -1
+        aux = filaPrioridadeCidade[i][1]
+        for j in range(i, len(filaPrioridadeCidade)): # Irá encontrar o menor elemento de um intervalo da lista
+            if (filaPrioridadeCidade[j][1] < aux): 
+               aux = filaPrioridadeCidade[j][1]
+               auxPos = j
+        if(filaPrioridadeCidade[auxPos][1] < filaPrioridadeCidade[i][1]): # Trocando elementos de posicação
+            aux = filaPrioridadeCidade[i]
+            filaPrioridadeCidade[i] = filaPrioridadeCidade[auxPos]
+            filaPrioridadeCidade[auxPos] = aux
 
-def OrdenaListaPrioridade(): # Ordenada a lista de prioridade com base nos valores de heurística de cada elemento
-    for i in range(len(listaPrioridadeCidades)):
-        aux = listaPrioridadeCidades[i][1]
-        for j in range(len(listaPrioridadeCidades)):
-            if(listaPrioridadeCidades[j][1] > aux):
-                auxCidade = listaPrioridadeCidades[j]
-                listaPrioridadeCidades[j] = listaPrioridadeCidades[i]
-                listaPrioridadeCidades[i] = auxCidade
+def AdicionaElementosListaPrioridade(cidade, distanciaPercorrida, cidadespercorridas): # Adiciona as cidades na lista de prioridade e retorna o 1° elemento da lista ordenada
+    for i in range(len(grafocidades[cidade])): #Dados gravados na lista: [NomeCidade, Heuristica, DistanciaPercorridaAteEsseNó, CidadesPercorridasAteEsseNó]
+        filaPrioridadeCidade.append([grafocidades[cidade][i][0],grafocidades[cidade][i][1]+grafocidades[cidade][i][2]+distanciaPercorrida, grafocidades[cidade][i][1]+distanciaPercorrida, cidadespercorridas+'\n'+cidade])    
+    OrdenarFILA()
+    return filaPrioridadeCidade[0][0], filaPrioridadeCidade[0][2], filaPrioridadeCidade[0][3] # Retorna as informações do 1° elemento da fila
 
-def AdicionaElementosListaPrioridade(cidade, distanciaPercorrida): # Adiciona as cidades na lista de prioridade e retorna o 1� elemento da lista ordenada
-    for i in range(len(grafocidades[cidade])):
-        listaPrioridadeCidades.append([grafocidades[cidade][i][0],grafocidades[cidade][i][1]+grafocidades[cidade][i][2]+distanciaPercorrida, grafocidades[cidade][i][1]+distanciaPercorrida])    
-    OrdenaListaPrioridade()
-    return listaPrioridadeCidades[0][0], listaPrioridadeCidades[0][2] # Retorna o 1� elemento da lista ordenada
-
-def expandeCidade(cidade, distanciaPercorrida):
-    print('Cidade Percorrida atual:', cidade,'\nDistancia Percorrida ate cidade atual:',distanciaPercorrida,'\n')
-    if(cidade == CidadeObjetivo): # Verifica se o objetivo foi atingido
-        print('Voc� chegou a bucharest!!!!')
+def expandeCidade(cidade, distanciaPercorrida, cidadesPercorridasAteNóAtual):
+    if(cidade == CidadeObjetivo): # Verifica se chegou ao objetivo
+        print('\nVocê chegou em bucharest!\nCaminho Percorrido ate o objetivo:', cidadesPercorridasAteNóAtual,'\nBucharest')
     else: 
-        ProximaCidade, distanciaPercorrida = AdicionaElementosListaPrioridade(cidade, distanciaPercorrida)
-        del(listaPrioridadeCidades[0]) # Retira da lista a Cidade a ser expandida
-        expandeCidade(ProximaCidade, distanciaPercorrida) # Expande proxima cidade
+        ProximaCidade, distanciaPercorrida, cidadesPercorridasAteNóAtual = AdicionaElementosListaPrioridade(cidade, distanciaPercorrida, cidadesPercorridasAteNóAtual)
+        del(filaPrioridadeCidade[0]) # Exclui o 1° elemto da fila
+        expandeCidade(ProximaCidade, distanciaPercorrida, cidadesPercorridasAteNóAtual) # Expande proxima cidade
+
 #_____________main____________
-expandeCidade('Oradea',0)
+print('Cidade Objetivo: Bucharest\nCidade de partida: Oradea')
+expandeCidade('Arad',0, '') #Cidade Origem, Distancia percorrida inicial, Cidades já percorridas.
