@@ -1,16 +1,19 @@
 
-# Rede Neural - Multi Camada - Função Sigmoid
+# Regressão Linear:
 
-No codigo foi implementado um rede neural com duas camadas, ao inves de utilizarmos uma função step como no algoritmo de Perpectron de 1 camada que está em https://github.com/OtavioBernardes/MachineLearning_Projects/Perceptron_1c/Perpectron_1C%20-%20Portas%20Logicas.py, utilizamos uma função sigmoid.
+No código foi implementada uma regressão linear simples, utilizando o dataset animals-weight.O problema consiste em encontrar uma curva que melhor se ajuste aos dados para realizarmos previsões futuras.
 
-A função step retorna 1 se o valor <> 0, e 0 se valor == 0
-![](https://miro.medium.com/max/480/1*0iOzeMS3s-3LTU9hYH9ryg.png)
+Dispensão dos dados:
+![](https://raw.githubusercontent.com/OtavioBernardes/Machine_Learning/master/Reg_Linear_Animals-Weight/imagens/imagem01.png)
 
-Já a função sigmoid pode retornar valores entre 0 e 1, exceto numeros negativos. </br>
-![](http://mathworld.wolfram.com/images/eps-gif/SigmoidFunction_701.gif)
+Visualizando a estrutura do meu dataset:
+![](https://raw.githubusercontent.com/OtavioBernardes/Machine_Learning/master/Reg_Linear_Animals-Weight/imagens/imagem02.png)
+### Body Weight sendo minha variavel preditora, e Brain Weight minha variavel dependente.
 
-Algoritmo implementado:  *"Não foi definido um erro minimo, a codição de parada do algoritmo é o limite de epocas."* </br>
-![](https://raw.githubusercontent.com/OtavioBernardes/MachineLearning_Projects/master/RedeNeural_MultiCamada/Redes%20Neurais/imagem02.png)
+Plotando as ligações dos meus dados: 
+</br>
+![](https://raw.githubusercontent.com/OtavioBernardes/Machine_Learning/master/Reg_Linear_Animals-Weight/imagens/imagem03.png)
 </br></br>
-Modelo da rede neural implementado abaixo:
-![](https://raw.githubusercontent.com/OtavioBernardes/MachineLearning_Projects/master/RedeNeural_MultiCamada/Redes%20Neurais/imagem01.png)
+
+Curva que melhor se ajusta aos meus dados.
+![]https://raw.githubusercontent.com/OtavioBernardes/Machine_Learning/master/Reg_Linear_Animals-Weight/imagens/imagem04.png)
