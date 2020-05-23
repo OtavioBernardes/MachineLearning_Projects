@@ -10,9 +10,9 @@ O problema consiste em encontrar uma curva que melhor se ajuste aos dados para r
 
 ### Visualizando a estrutura do meu dataset:
 
-![](https://raw.githubusercontent.com/OtavioBernardes/Machine_Learning/master/Reg_Linear_Animals-Weight/imagens/imagem02.png)
+#### Body Weight sendo minha variavel preditora, e Brain Weight minha variavel dependente.
 
-**** Body Weight sendo minha variavel preditora, e Brain Weight minha variavel dependente.
+![](https://raw.githubusercontent.com/OtavioBernardes/Machine_Learning/master/Reg_Linear_Animals-Weight/imagens/imagem02.png)
 
 ### Plotando as ligações dos meus dados: 
 
