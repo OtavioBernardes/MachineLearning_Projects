@@ -20,4 +20,4 @@ O problema consiste em encontrar uma curva que melhor se ajuste aos dados para r
 
 ### Curva que melhor se ajusta aos meus dados.
 
-![]https://raw.githubusercontent.com/OtavioBernardes/Machine_Learning/master/Reg_Linear_Animals-Weight/imagens/imagem04.png)
+![](https://raw.githubusercontent.com/OtavioBernardes/Machine_Learning/master/Reg_Linear_Animals-Weight/imagens/imagem04.png)
