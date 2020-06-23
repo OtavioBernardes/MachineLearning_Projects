@@ -6,14 +6,14 @@ from neural import PulaPersonagem, criaRede # Modulo que importa a rede neural
 # --------------------------------- Variaveis do Game ---------------------------------
 objeto = 0 # Obstaculo
 objeto_skin = 0 # skin do obstaculo
-FPS = 15 # FPS do Game
+FPS = 10000000 # FPS do Game
 Velocidade = 0.95 # Velocidade do obstaculo
 font, screen,  bala, bg, largura, altura, clock = __init__() # Iniciando componetes da tela
 # ------------------------------ Variaveis do Alg. Genético --------------------------------
-CHANCE_MUT = .50     # Chance de mutação de um peso qualquer
+CHANCE_MUT = .20     # Chance de mutação de um peso qualquer
 CHANCE_CO = .50     # Chance de crossing over de um peso qualquer
-NUM_INDIVIDUOS = 2  # Tamanho da população
-NUM_MELHORES = 0     # Número de indivíduos que são mantidos de uma geração para a próxima
+NUM_INDIVIDUOS = 20  # Tamanho da população
+NUM_MELHORES = 6     # Número de indivíduos que são mantidos de uma geração para a próxima
 NUM_GERACOES = 100
 # ------------------------------ Funções do Alg. Genético --------------------------------
          
@@ -239,7 +239,7 @@ for e in range(NUM_GERACOES):
                 Velocidade *= 1.10
             objeto = 0
     populacao = OrdenaLista(populacao)
-    if(populacao[0][2] > MelhorScore):
-        MelhorScore = populacao[0][2]
-        MelhorScore = e
+    if(populacao[0][2] > MelhorScore[0]):
+        MelhorScore[0] = populacao[0][2]
+        MelhorScore[1] = e
     populacao = proximageracao(populacao)
