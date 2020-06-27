@@ -18,9 +18,6 @@ def criaRede():
 def sigmoid(soma): ## Função sigmoid
     return 1 / (1+ np.exp(-soma)) # 1/(1+exp^(-x))
 
-def ReLU(x):
-    return x * (x > 0)
-   
 
 def PulaPersonagem(dist_velo, pesosCamada0, pesosCamada1, pesosCamada2):
     SomaSinapse0 = np.dot(dist_velo, pesosCamada0) ## Multiplicamos as entradas com os pesos respctivios e somamos
@@ -31,6 +28,6 @@ def PulaPersonagem(dist_velo, pesosCamada0, pesosCamada1, pesosCamada2):
     
     SomaSinapse2 = np.dot(ValoresAtivacaoCamadaOculta1, pesosCamada2)
     CamadaSaida = sigmoid(SomaSinapse2)
-    return CamadaSaida > 0.5
+    return CamadaSaida > 0.90
 
     

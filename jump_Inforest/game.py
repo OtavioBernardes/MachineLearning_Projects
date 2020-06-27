@@ -6,7 +6,7 @@ from neural import PulaPersonagem, criaRede # Modulo que importa a rede neural
 # --------------------------------- Variaveis do Game ---------------------------------
 objeto = 0 # Obstaculo
 objeto_skin = 0 # skin do obstaculo
-FPS = 10000000 # FPS do Game
+FPS = 1000000000 # FPS do Game
 Velocidade = 0.95 # Velocidade do obstaculo
 font, screen,  bala, bg, largura, altura, clock = __init__() # Iniciando componetes da tela
 # ------------------------------ Variaveis do Alg. Genético --------------------------------
@@ -33,19 +33,25 @@ def OrdenaLista(lista):
 def Roleta(lista):
     individuos_cros = []
     scoretotal = 0
+
     for i in range(NUM_MELHORES,len(lista)):
-        scoretotal += lista[i][2]
+        scoretotal += lista[i][2] # Somando Score Total
         
-    for i in range(NUM_MELHORES,len(lista)): # normalização
-        lista[i][2] = lista[i][2]/scoretotal
+    for i in range(NUM_MELHORES,len(lista)): # Normalização
+        if(lista[i][2] != 0):
+            lista[i][2] = lista[i][2]/scoretotal
+            
     for i in range(0, int(NUM_INDIVIDUOS*CHANCE_CO)):
         valor = np.random.rand()
         acumulado = 0.00
-        
         for j in range(NUM_MELHORES,len(lista)): # acumulado
             acumulado += lista[j][2]
-            if (valor < acumulado):
-                individuos_cros.append(j)      
+            if (valor <= acumulado):
+                individuos_cros.append(j)
+                break;
+    if(individuos_cros == []):
+        for i in range(0, int(NUM_INDIVIDUOS*CHANCE_CO)):
+            individuos_cros.append(np.random.randint(NUM_MELHORES, len(lista)))
     return individuos_cros
 
 def mutacao(lista):
@@ -116,7 +122,6 @@ def proximageracao(lista):
         lista[i][0].LimpaParametros()
         lista[i][1] = False
         lista[i][2] = 0
-        
     individuos_cros = Roleta(lista)
     lista_individuos_cruzados = crossover(lista, individuos_cros)
     for i in range(NUM_MELHORES,NUM_MELHORES+int(NUM_INDIVIDUOS*CHANCE_CO)):
@@ -124,7 +129,6 @@ def proximageracao(lista):
     mutacao(lista)
     return lista
 # ------------------------------ Funções do Game --------------------------------
-
 def criaobjeto():
     objeto = [np.random.randint(largura-200,largura), 205]  # Posicão inicial do objeto
     objeto_skin = pygame.Surface((10, 10))  # Tamanho do objeto
@@ -132,38 +136,39 @@ def criaobjeto():
     return objeto, objeto_skin, 1
 
 class _Personagem():
-    def __init__(self):
+    def __init__(self): # Função que inicia as variaveis do personagem
         self.PULA = 0 
         self.andar = 0
         self.game_over = False
         self.score = 0
         self.pesosCamada0, self.pesosCamada1, self.pesosCamada2 = criaRede()
-        
-    def RedefiniRede(self, new0, new1, new2):
-         self.pesosCamada0, self.pesosCamada1, self.pesosCamada2 = new0, new1, new2
-         self.LimpaParametros()
-    def LimpaParametros(self):
-        self.PULA = 0 
-        self.andar = 0
-        self.game_over = False
-        self.score = 0
-        
-    def RetornaParametros(self):
-        return self.pesosCamada0, self.pesosCamada1, self.pesosCamada2
-
-    def JogaPersonagem(self, _):
         persongem_parado, persongem_passo1, persongem_passo2, persongem_passo3, persongem_passo4, persongem_pulo = Personagem()
         self.x = np.random.randint(185,215)
         self.monkey = [self.x, 200]
         self.monkey_skin = pygame.Surface((10, 35))
         self.monkey_skin = pygame.image.load(persongem_parado)
-        
 
-        if(self.monkey[0] == 200 and self.monkey[1] == self.x):  # Se o macaco estiver no chão
-            self.PULA = 0  # Defini PULA como 0
+        
+    def RedefiniRede(self, new0, new1, new2): # Função que defini os pesos da rede
+         self.pesosCamada0, self.pesosCamada1, self.pesosCamada2 = new0, new1, new2
+         self.LimpaParametros()
+         
+    def LimpaParametros(self): # Função utilizada para resetar as variaveis do personagem
+        self.PULA = 0 
+        self.andar = 0
+        self.game_over = False
+        self.score = 0
+        
+    def RetornaParametros(self): # Função utilizada para retornar os pesos da rede neural
+        return self.pesosCamada0, self.pesosCamada1, self.pesosCamada2
+
+    def JogaPersonagem(self, _):
+        persongem_parado, persongem_passo1, persongem_passo2, persongem_passo3, persongem_passo4, persongem_pulo = Personagem()
+        if(self.monkey[0] == self.x and self.monkey[1] == 200):  # Se o macaco estiver no chão
+            self.PULA = 0  # Define PULA como 0
             self.monkey_skin = pygame.image.load(persongem_passo1)
         
-        if(self.PULA == 1):  # Se o macaco estiver em um salto
+        if(self.PULA == 1):
             self.monkey_skin = pygame.image.load(persongem_pulo)
             self.monkey = (self.monkey[0], self.monkey[1]+10)  # A cada ciclo ele desce 15 pixels
         
@@ -180,17 +185,16 @@ class _Personagem():
            self.monkey_skin = pygame.image.load(persongem_passo4)
            self.andar = 0
            
-           # BUG 
-        if(self.monkey[1] == self.x and objeto[0] >= 197.5 and objeto[0] <= 202.5):
-            self.game_over = True
-        elif(self.monkey[1] == self.x and objeto[0]+10*Velocidade > 202.5 and objeto[0] < 197.5):
+
+        if(self.monkey[1] == 200 and objeto[0]+2*Velocidade >= self.x and objeto[0]-2*Velocidade < self.x):
             self.game_over = True
             
-        if PulaPersonagem((objeto[0] - self.monkey[0],Velocidade), self.pesosCamada0, self.pesosCamada1, self.pesosCamada2) and self.PULA == 0:  # Se o usuario apertar spaco e o macaco estiver no chão
-            for i in range(10):    
-                self.monkey = (self.monkey[0], self.monkey[1]-10)  # Macaco salta
-            self.PULA = 1
-       
+        if self.game_over != True:
+            if PulaPersonagem((objeto[0] - self.monkey[0],Velocidade), self.pesosCamada0, self.pesosCamada1, self.pesosCamada2) and self.PULA == 0:  # Se o usuario apertar spaco e o macaco estiver no chão
+                self.PULA = 1
+                for i in range(10):   
+                    self.monkey = (self.monkey[0], self.monkey[1]-10)  # Macaco salta
+           
         if(objeto[0] < self.monkey[0] and self.game_over != True and _ == 1):
             _ = 0
             self.score = self.score + 1
@@ -214,11 +218,11 @@ for e in range(NUM_GERACOES):
         screen.blit(populacao_font, populacao_rect)
         score_font = font.render('Melhor Score: %s' % (MelhorScore[0]), True, (255, 255, 255))
         score_rect = score_font.get_rect()
-        score_rect.topright = (140, 30)
+        score_rect.topright = (155, 35)
         screen.blit(score_font, score_rect)
         Populacaoscore_font = font.render('Populacao com melhor Score: %s' % (MelhorScore[1]), True, (255, 255, 255))
         Populacaoscore_rect = Populacaoscore_font.get_rect()
-        Populacaoscore_rect.topright = (280, 10)
+        Populacaoscore_rect.topright = (285, 10)
         screen.blit(Populacaoscore_font, Populacaoscore_rect)
         clock.tick(FPS)  # FPS por segundo
         for event in pygame.event.get():
@@ -235,7 +239,7 @@ for e in range(NUM_GERACOES):
             break
         objeto = (objeto[0]-(10*Velocidade), objeto[1])
         if(objeto[0] <= 15):
-            if(Velocidade <= 3.5):
+            if(Velocidade <= 5.5):
                 Velocidade *= 1.10
             objeto = 0
     populacao = OrdenaLista(populacao)
