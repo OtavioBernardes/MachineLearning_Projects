@@ -10,9 +10,9 @@ Created on Sun May 24 14:20:27 2020
 import numpy as np
 
 def criaRede():
-    pesosCamada0 = np.random.rand(2,5) # Cria-se um array com 6 elementos, 3 para cada entrada.
-    pesosCamada1 = np.random.rand(5,5) # Cria-se um array para a segunda camada 
-    pesosCamada2 = np.random.rand(5,1) # Cria-se um array para a terceira camada 
+    pesosCamada0 = np.random.rand(2,10) # Cria-se um array com 6 elementos, 3 para cada entrada.
+    pesosCamada1 = np.random.rand(10,10) # Cria-se um array para a segunda camada 
+    pesosCamada2 = np.random.rand(10,1) # Cria-se um array para a terceira camada 
     return pesosCamada0, pesosCamada1, pesosCamada2
 
 def sigmoid(soma): ## Função sigmoid
@@ -28,6 +28,6 @@ def PulaPersonagem(dist_velo, pesosCamada0, pesosCamada1, pesosCamada2):
     
     SomaSinapse2 = np.dot(ValoresAtivacaoCamadaOculta1, pesosCamada2)
     CamadaSaida = sigmoid(SomaSinapse2)
-    return CamadaSaida > 0.90
+    return CamadaSaida > 0.99
 
     

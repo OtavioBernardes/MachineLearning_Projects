@@ -9,7 +9,7 @@ import pygame
 from pygame.locals import *
 
 def __init__():
-    largura = 800
+    largura = 500
     altura = 400
     clock = pygame.time.Clock()
     pygame.display.set_caption('Game + Alg. Genético')

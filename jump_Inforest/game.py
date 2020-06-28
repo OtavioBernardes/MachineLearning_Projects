@@ -10,11 +10,11 @@ FPS = 1000000000 # FPS do Game
 Velocidade = 0.95 # Velocidade do obstaculo
 font, screen,  bala, bg, largura, altura, clock = __init__() # Iniciando componetes da tela
 # ------------------------------ Variaveis do Alg. Genético --------------------------------
-CHANCE_MUT = .20     # Chance de mutação de um peso qualquer
-CHANCE_CO = .50     # Chance de crossing over de um peso qualquer
-NUM_INDIVIDUOS = 20  # Tamanho da população
-NUM_MELHORES = 6     # Número de indivíduos que são mantidos de uma geração para a próxima
-NUM_GERACOES = 100
+CHANCE_MUT = .10     # Chance de mutação de um peso qualquer
+CHANCE_CO = .60     # Chance de crossing over de um peso qualquer
+NUM_INDIVIDUOS = 30  # Tamanho da população
+NUM_MELHORES = 9    # Número de indivíduos que são mantidos de uma geração para a próxima
+NUM_GERACOES = 50
 # ------------------------------ Funções do Alg. Genético --------------------------------
          
 def CriaPopulacao():
@@ -49,9 +49,6 @@ def Roleta(lista):
             if (valor <= acumulado):
                 individuos_cros.append(j)
                 break;
-    if(individuos_cros == []):
-        for i in range(0, int(NUM_INDIVIDUOS*CHANCE_CO)):
-            individuos_cros.append(np.random.randint(NUM_MELHORES, len(lista)))
     return individuos_cros
 
 def mutacao(lista):
@@ -170,7 +167,7 @@ class _Personagem():
         
         if(self.PULA == 1):
             self.monkey_skin = pygame.image.load(persongem_pulo)
-            self.monkey = (self.monkey[0], self.monkey[1]+10)  # A cada ciclo ele desce 15 pixels
+            self.monkey = (self.monkey[0], self.monkey[1]+30)  # A cada ciclo ele desce 15 pixels
         
         if(self.andar == 0 and self.PULA == 0):
             self.monkey_skin = pygame.image.load(persongem_passo1)
@@ -186,14 +183,16 @@ class _Personagem():
            self.andar = 0
            
 
-        if(self.monkey[1] == 200 and objeto[0]+2*Velocidade >= self.x and objeto[0]-2*Velocidade < self.x):
+        if(self.monkey[1] == 200 and objeto[0]+2 >= self.x and objeto[0]-2 < self.x):
             self.game_over = True
             
+
+            
         if self.game_over != True:
-            if PulaPersonagem((objeto[0] - self.monkey[0],Velocidade), self.pesosCamada0, self.pesosCamada1, self.pesosCamada2) and self.PULA == 0:  # Se o usuario apertar spaco e o macaco estiver no chão
+            if PulaPersonagem((objeto[0]- self.monkey[0], self.PULA), self.pesosCamada0, self.pesosCamada1, self.pesosCamada2) and self.PULA == 0:  # Se o usuario apertar spaco e o macaco estiver no chão
                 self.PULA = 1
-                for i in range(10):   
-                    self.monkey = (self.monkey[0], self.monkey[1]-10)  # Macaco salta
+                for i in range(8):   
+                    self.monkey = (self.monkey[0], self.monkey[1]-15)  # Macaco salta
            
         if(objeto[0] < self.monkey[0] and self.game_over != True and _ == 1):
             _ = 0
@@ -205,24 +204,24 @@ class _Personagem():
         return self.game_over, self.score, _
 
 # ---------------------------- Rota do Game + Alg. Genético ------------------------------
-
+FPS = 60
 populacao = CriaPopulacao()
 MelhorScore = [0,0]
 for e in range(NUM_GERACOES):
     while(True):
         gameover = True
         screen.blit(bg, (-100, 0))
-        populacao_font = font.render('População N°: %s' % (e), True, (255, 255, 255))
+        populacao_font = font.render('População N°: %s' % (e+1), True, (255, 255, 255))
         populacao_rect = populacao_font.get_rect()
-        populacao_rect.topleft = (450, 10)
+        populacao_rect.topleft = (10, 60)
         screen.blit(populacao_font, populacao_rect)
         score_font = font.render('Melhor Score: %s' % (MelhorScore[0]), True, (255, 255, 255))
         score_rect = score_font.get_rect()
-        score_rect.topright = (155, 35)
+        score_rect.topright = (146, 35)
         screen.blit(score_font, score_rect)
-        Populacaoscore_font = font.render('Populacao com melhor Score: %s' % (MelhorScore[1]), True, (255, 255, 255))
+        Populacaoscore_font = font.render('Populacao com melhor Score: %s' % (MelhorScore[1]+1), True, (255, 255, 255))
         Populacaoscore_rect = Populacaoscore_font.get_rect()
-        Populacaoscore_rect.topright = (285, 10)
+        Populacaoscore_rect.topright = (286, 10)
         screen.blit(Populacaoscore_font, Populacaoscore_rect)
         clock.tick(FPS)  # FPS por segundo
         for event in pygame.event.get():
@@ -237,11 +236,12 @@ for e in range(NUM_GERACOES):
         _ = a
         if gameover == True:
             break
-        objeto = (objeto[0]-(10*Velocidade), objeto[1])
+        objeto = (objeto[0]-5.5, objeto[1])
         if(objeto[0] <= 15):
-            if(Velocidade <= 5.5):
-                Velocidade *= 1.10
+            if(FPS <= 300000):
+                FPS *= 2
             objeto = 0
+    FPS = 60
     populacao = OrdenaLista(populacao)
     if(populacao[0][2] > MelhorScore[0]):
         MelhorScore[0] = populacao[0][2]
